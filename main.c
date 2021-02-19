@@ -2,7 +2,7 @@
 #include <stdlib.h>
 int main(){
 
-system("Firefox board.html");
+system("firefox board.html");
 return 0;
 
 }
