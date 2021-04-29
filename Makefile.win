@@ -1,32 +1,30 @@
-# Project: Проект4
-# Makefile created by Dev-C++ 5.11
+CC=g++
+CFLAGS=-Wall -Wextra -Wpedantic -Werror
+CPPFLAGS=-MMD -I src
 
-CPP      = g++.exe
-CC       = gcc.exe
-WINDRES  = windres.exe
-OBJ      = Board.o lib.o
-LINKOBJ  = Board.o lib.o
-LIBS     = 
-INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
-CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
-BIN      = Chess.exe
-CXXFLAGS = $(CXXINCS) -std=c++11
-CFLAGS   = $(INCS) -std=c++11
-RM       = rm.exe -f
+APPLICATION_NAME=chess
+APPLICATION_LIB=chesslib
 
-.PHONY: all all-before all-after clean clean-custom
+SRC=src
+BIN=bin
+OBJ=obj
 
-all: all-before $(BIN) all-after gcc -Wall -Werror -o Board Board.cpp
+APPLICATION_PATH=$(BIN)/$(APPLICATION_NAME)
+LIBRARY_PATH=$(OBJ)/$(SRC)/$(APPLICATION_LIB)/$(APPLICATION_LIB).a
 
-clean: clean-custom
-	${RM} $(OBJ) $(BIN) $(RM) main
+APPLICATION_SRC=$(shell find $(SRC)/$(APPLICATION_NAME) -name '*.c')
+APPLICATION_OBJ=$(APPLICATION_SRC:$(SRC)/%.c=$(OBJ)/$(SRC)/%.o)
 
-$(BIN): $(OBJ)
-	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+LIBRARY_SRC=$(shell find $(SRC)/$(APPLIACATION_LIB) -name '*.c')
+LIBRARY_OBJ=$(LIBRARY_SRC:$(SRC)/%.c=$(OBJ)/$(SRC)/%.o)
 
-Board.o: Board.cpp
-	$(CPP) -c Board.cpp -o Board.o $(CXXFLAGS)
+.PHONY: all
 
-lib.o: lib.cpp
-	$(CPP) -c lib.cpp -o lib.o $(CXXFLAGS)
-
+$(APPLICATION_PATH): $(APPLICATION_OBJ) $(LIBRARY_PATH)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ $^
+	
+$(OBJ)/%.o: %.c
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+	
+$(LIBRARY_PATH): $(LIBRARY_OBJ)
+ ar rcs $@ $^

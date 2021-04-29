@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string>
-#include "lib.h"
+#include <libchessviz/lib.h>
 
 using namespace std;
 
